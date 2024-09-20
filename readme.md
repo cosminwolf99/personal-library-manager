@@ -1,4 +1,4 @@
-earl# Personal Library Manager
+# Personal Library Manager
 
 This is a Personal Library Manager application built with React.js, TypeScript, SWR, axios, formik, and MUI 5. It allows users to manage their personal book collection by adding, viewing, updating, and deleting books.
 
