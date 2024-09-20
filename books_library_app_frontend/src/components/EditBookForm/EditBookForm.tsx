@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
+import { KeyedMutator } from "swr";
 import {
   TextField,
   Button,
@@ -8,9 +9,9 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { KeyedMutator } from "swr";
 import { Book } from "../../types/book-types";
 import { updateBook } from "../../api/books/updateBook";
+import validationSchema from "../../utils";
 
 interface EditBookFormProps {
   book: Book;
@@ -35,12 +36,19 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
       genre: book.genre,
       description: book.description,
     },
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       await updateBook({ ...book, ...values });
       mutate();
       handleClose();
     },
   });
+
+  const hasChanges = Object.keys(formik.values).some(
+    (key) =>
+      formik.values[key as keyof typeof formik.values] !==
+      book[key as keyof typeof book]
+  );
 
   return (
     <>
@@ -58,6 +66,9 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
               label="Title"
               value={formik.values.title}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.title && Boolean(formik.errors.title)}
+              helperText={formik.touched.title && formik.errors.title}
               margin="normal"
             />
             <TextField
@@ -67,6 +78,9 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
               label="Author"
               value={formik.values.author}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.author && Boolean(formik.errors.author)}
+              helperText={formik.touched.author && formik.errors.author}
               margin="normal"
             />
             <TextField
@@ -76,6 +90,9 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
               label="Genre"
               value={formik.values.genre}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.genre && Boolean(formik.errors.genre)}
+              helperText={formik.touched.genre && formik.errors.genre}
               margin="normal"
             />
             <TextField
@@ -85,6 +102,13 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
               label="Description"
               value={formik.values.description}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.description && Boolean(formik.errors.description)
+              }
+              helperText={
+                formik.touched.description && formik.errors.description
+              }
               margin="normal"
               multiline
               rows={4}
@@ -95,7 +119,11 @@ const EditBookForm: React.FC<EditBookFormProps> = ({ book, mutate }) => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => formik.handleSubmit()} color="primary">
+          <Button
+            onClick={() => formik.handleSubmit()}
+            color="primary"
+            disabled={!hasChanges || !formik.isValid || formik.isSubmitting}
+          >
             Save
           </Button>
         </DialogActions>
