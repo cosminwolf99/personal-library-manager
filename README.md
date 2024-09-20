@@ -23,8 +23,8 @@ This is a Personal Library Manager application built with React.js, TypeScript, 
 
 1. Clone the repository.
 2. Set up and start the mock server:
- enter cd books_library_app_mock_server in a terminal, then enter npm install and lastly enter npm start  => The server will run on http://localhost:3001
-4. In a new terminal window, set up and start the frontend application: enter cd ../books_library_app_frontend in a terminal, then enter npm install and lastly enter npm start => The application will run on http://localhost:3000
+ cd books_library_app_mock_server in a terminal, then npm install and lastly  npm start  => The server will run on http://localhost:3001
+4. In a new terminal window, set up and start the frontend application: cd ../books_library_app_frontend in a terminal, then  npm install and lastly  npm start => The application will run on http://localhost:3000
 
 ## Usage
 
